@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>User List</h2>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Phone Number</th>
+                <th>Employee ID</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- JavaScript will populate this section with user data -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to fetch and display user data
+        function fetchUserData() {
+            // URL of your Spring Boot endpoint
+            const url = 'http://192.168.1.109:8080/api/user'; // Update this to your correct API endpoint
+
+            fetch(url)
+                .then(response => response.json())
+                .then(users => {
+                    const tableBody = document.getElementById('userTableBody');
+                    tableBody.innerHTML = ''; // Clear existing rows
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        // Create and append table cells for each field
+                        row.innerHTML = `
+                            <td>${user.userId}</td>
+                            <td>${user.firstName}</td>
+                            <td>${user.middleName || ''}</td> <!-- Optional middle name -->
+                            <td>${user.lastName}</td>
+                            <td>${user.email}</td>
+                            <td>${user.username}</td>
+                            <td>${user.phoneNumber}</td>
+                            <td>${user.employeeId}</td>
+                            <td>${user.role.roleName}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                });
+        }
+
+        // Fetch user data when the page loads
+        window.onload = fetchUserData;
+    </script>
+</body>
+</html>
