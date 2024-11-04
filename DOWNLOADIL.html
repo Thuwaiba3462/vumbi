@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File</title>
+</head>
+<body>
+    <h2>Download Application File</h2>
+    <form id="downloadForm">
+        <label for="applicationId">Application ID:</label>
+        <input type="number" id="applicationId" name="applicationId" required><br><br>
+
+        <label for="fileType">File Type:</label>
+        <select id="fileType" name="fileType" required>
+            <option value="doc1">Document 1</option>
+            <option value="doc2">Document 2</option>
+            <option value="image">Image</option>
+        </select><br><br>
+
+        <button type="button" onclick="downloadFile()">Download</button>
+    </form>
+
+    <script>
+        function downloadFile() {
+            const applicationId = document.getElementById('applicationId').value;
+            const fileType = document.getElementById('fileType').value;
+
+            if (applicationId && fileType) {
+                // Create a link to download the file
+                const downloadLink = document.createElement('a');
+                downloadLink.href = `http://192.168.1.109:8080/api/application/${applicationId}/download?fileType=${fileType}`;
+                downloadLink.setAttribute('download', '');
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    </script>
+</body>
+</html>
